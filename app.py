@@ -3,12 +3,17 @@ DB_NAME = "d7j127qpvbukdo"
 DB_USER = "zvtclmedqrwqwd"
 DB_PASS = "ceea7532a0c5ea5d15d3fb1636be39bdabbeb4a34d3fece0a6c606d589d530a2"
 
+import flask
+from flask import request
 import psycopg2
 import psycopg2.extras
 import json
 
+app = flask.Flask(__name__)
 
-def get_all_characters():
+
+@app.route('/characters', methods=['GET'])
+def home():
     conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM characters;")
@@ -20,9 +25,5 @@ def get_all_characters():
     conn.commit()
     cur.close()
     conn.close()
-    return json.dumps(json_data)
-
-
-if __name__ == '__main__':
-    all_characters = get_all_characters()
-    print(all_characters)
+    all_characters = json_data
+    return print(all_characters)
