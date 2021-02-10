@@ -12,7 +12,7 @@ import json
 app = flask.Flask(__name__)
 
 
-@app.route('/characters', methods=['GET'])
+@app.route('/', methods=['GET'])
 def home():
     conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
