@@ -24,7 +24,7 @@ def home():
     cur.close()
     conn.close()
     all_characters = json_data
-    return print(all_characters)
+    return all_characters
 
 
 if __name__ == '__main__':
