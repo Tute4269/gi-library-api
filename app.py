@@ -5,7 +5,7 @@ import psycopg2.extras
 app = flask.Flask(__name__)
 
 
-@app.route('/', methods=['GET'])
+@app.route('/characters', methods=['GET'])
 def home():
     DB_HOST = "ec2-67-202-63-147.compute-1.amazonaws.com"
     DB_NAME = "d7j127qpvbukdo"
@@ -15,16 +15,16 @@ def home():
     conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM characters;")
-    row_headers = [x[0] for x in cur.description]  # this will extract row headers
     rv = cur.fetchall()
+    row_headers = [x[0] for x in cur.description]  # this will extract row headers
     json_data = []
     for result in rv:
         json_data.append(dict(zip(row_headers, result)))
     conn.commit()
     cur.close()
     conn.close()
-    all_characters = json_data
-    return all_characters
+    result = flask.jsonify(json_data)
+    return result
 
 
 if __name__ == '__main__':
